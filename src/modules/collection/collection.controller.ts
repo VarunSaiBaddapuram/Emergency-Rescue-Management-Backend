@@ -1,53 +1,29 @@
 import * as collectionService from "./collection.service";
+import { asyncHandler } from "../../common/utils/asyncHandler";
 
 export default {
-  addReliefCenter: async (req: any, res: any) => {
-    try {
-      const response = await collectionService.addReliefCenterService(req.body);
-      res.status(response.status).json(response.payload);
-    } catch (error: any) {
-      console.log(error.message);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  },
+  addReliefCenter: asyncHandler(async (req: any, res: any) => {
+    const response = await collectionService.addReliefCenterService(req.body);
+    res.status(201).json(response);
+  }),
 
-  getAllReliefCenter: async (req: any, res: any) => {
-    try {
-      const response = await collectionService.getAllReliefCenterService();
-      res.status(response.status).json(response.payload);
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
-    }
-  },
+  getAllReliefCenter: asyncHandler(async (req: any, res: any) => {
+    const response = await collectionService.getAllReliefCenterService();
+    res.status(200).json(response);
+  }),
 
-  AcceptDelivery: async (req: any, res: any) => {
-    try {
-      const response = await collectionService.AcceptDeliveryService(req.params.id, req.body);
-      res.status(response.status).json(response.payload);
-    } catch (err: any) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
-    }
-  },
+  AcceptDelivery: asyncHandler(async (req: any, res: any) => {
+    const response = await collectionService.AcceptDeliveryService(req.params.id, req.body);
+    res.status(200).json(response);
+  }),
 
-  DispatchItem: async (req: any, res: any) => {
-    try {
-      const response = await collectionService.DispatchItemService(req.params.id, req.body);
-      res.status(response.status).json(response.payload);
-    } catch (err: any) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
-    }
-  },
+  DispatchItem: asyncHandler(async (req: any, res: any) => {
+    const response = await collectionService.DispatchItemService(req.params.id, req.body);
+    res.status(200).json(response);
+  }),
 
-  getCollectionCenter: async (req: any, res: any) => {
-    try {
-      const response = await collectionService.getCollectionCenterService(req.params.id);
-      res.status(response.status).json(response.payload);
-    } catch (error: any) {
-      return res.status(401).json({
-        message: 'Get Req Failed'
-      });
-    }
-  },
+  getCollectionCenter: asyncHandler(async (req: any, res: any) => {
+    const response = await collectionService.getCollectionCenterService(req.params.id);
+    res.status(200).json(response);
+  }),
 };

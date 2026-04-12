@@ -1,41 +1,24 @@
 import * as authService from "./auth.service";
+import { asyncHandler } from "../../common/utils/asyncHandler";
 
 export default {
-  signup: async (req: any, res: any) => {
-    try {
-      const response = await authService.signupService(req.body);
-      return res.status(response.status).json(response.payload);
-    } catch (error: any) {
-      console.log("cont", error.message);
-      return res.status(500).json({ message: "Server Error" });
-    }
-  },
+  signup: asyncHandler(async (req: any, res: any) => {
+    const response = await authService.signupService(req.body);
+    return res.status(201).json(response);
+  }),
 
-  signin: async (req: any, res: any) => {
-    try {
-      const response = await authService.signinService(req.body);
-      return res.status(response.status).json(response.payload);
-    } catch (error: any) {
-      console.log(error.message);
-      return res.status(500).json({ message: "Server Error" });
-    }
-  },
+  signin: asyncHandler(async (req: any, res: any) => {
+    const response = await authService.signinService(req.body);
+    return res.status(201).json(response);
+  }),
 
-  verifyToken: async (req: any, res: any) => {
-    try {
-      const response = await authService.verifyTokenService(req.body.token);
-      return res.status(response.status).json(response.payload);
-    } catch (error: any) {
-      return res.status(500).json({ message: "Server Error" });
-    }
-  },
+  verifyToken: asyncHandler(async (req: any, res: any) => {
+    const response = await authService.verifyTokenService(req.body.token);
+    return res.status(200).json(response);
+  }),
 
-  getUser: async (req: any, res: any) => {
-    try {
-      const response = await authService.getUserService(req.params.id);
-      return res.status(response.status).json(response.payload);
-    } catch (error: any) {
-      return res.status(500).json({ message: "Server Error" });
-    }
-  },
+  getUser: asyncHandler(async (req: any, res: any) => {
+    const response = await authService.getUserService(req.params.id);
+    return res.status(200).json(response);
+  }),
 };

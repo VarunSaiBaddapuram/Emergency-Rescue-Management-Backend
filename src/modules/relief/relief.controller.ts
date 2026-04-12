@@ -1,89 +1,49 @@
 import * as reliefService from "./relief.service";
+import { asyncHandler } from "../../common/utils/asyncHandler";
 
 export default {
-  addReliefCenter: async (req: any, res: any) => {
-    try {
-      const response = await reliefService.addReliefCenterService(req.body);
-      res.status(response.status).json(response.payload);
-    } catch (error: any) {
-      console.log(error.message);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  },
+  addReliefCenter: asyncHandler(async (req: any, res: any) => {
+    const response = await reliefService.addReliefCenterService(req.body);
+    res.status(201).json(response);
+  }),
 
-  getReliefCenter: async (req: any, res: any) => {
-    try {
-      const response = await reliefService.getReliefCenterService(req.params.id);
-      res.status(response.status).json(response.payload);
-    } catch (error: any) {
-      return res.status(401).json({
-        message: 'Get Req Failed'
-      });
-    }
-  },
+  getReliefCenter: asyncHandler(async (req: any, res: any) => {
+    const response = await reliefService.getReliefCenterService(req.params.id);
+    res.status(200).json(response);
+  }),
 
-  addadmission: async (req: any, res: any) => {
-    try {
-      const response = await reliefService.addadmissionService(req.params.id, req.body.Admission);
-      res.status(response.status).json(response.payload);
-    } catch (err: any) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
-    }
-  },
+  addadmission: asyncHandler(async (req: any, res: any) => {
+    const response = await reliefService.addadmissionService(req.params.id, req.body.Admission);
+    res.status(200).json(response);
+  }),
 
-  getAllReliefCenter: async (req: any, res: any) => {
-    try {
-      const response = await reliefService.getAllReliefCenterService();
-      res.status(response.status).json(response.payload);
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
-    }
-  },
+  getAllReliefCenter: asyncHandler(async (req: any, res: any) => {
+    const response = await reliefService.getAllReliefCenterService();
+    res.status(200).json(response);
+  }),
 
-  addReliefSupplyRequest: async (req: any, res: any) => {
-    try {
-      const response = await reliefService.addReliefSupplyRequestService(req.body);
-      res.status(response.status).json(response.payload);
-    } catch (error: any) {
-      console.log(error.message);
-    }
-  },
+  addReliefSupplyRequest: asyncHandler(async (req: any, res: any) => {
+    const response = await reliefService.addReliefSupplyRequestService(req.body);
+    res.status(201).json(response);
+  }),
 
-  confirmDelivery: async (req: any, res: any) => {
-    try {
-      const response = await reliefService.confirmDeliveryService(req.params.id);
-      res.status(response.status).json(response.payload);
-    } catch (err: any) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
-    }
-  },
+  confirmDelivery: asyncHandler(async (req: any, res: any) => {
+    const response = await reliefService.confirmDeliveryService(req.params.id);
+    res.status(200).json(response);
+  }),
 
-  getAllReliefSupplyReqeuest: async (req: any, res: any) => {
-    try {
-      const response = await reliefService.getAllReliefSupplyReqeuestService();
-      res.status(response.status).json(response.payload);
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
-    }
-  },
+  getAllReliefSupplyReqeuest: asyncHandler(async (req: any, res: any) => {
+    const response = await reliefService.getAllReliefSupplyReqeuestService();
+    res.status(200).json(response);
+  }),
 
-  getReliefSupplyReqeuestbyCreator: async (req: any, res: any) => {
-    try {
-      const response = await reliefService.getReliefSupplyReqeuestbyCreatorService(req.params.id);
-      res.status(response.status).json(response.payload);
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
-    }
-  },
+  getReliefSupplyReqeuestbyCreator: asyncHandler(async (req: any, res: any) => {
+    const response = await reliefService.getReliefSupplyReqeuestbyCreatorService(req.params.id);
+    res.status(200).json(response);
+  }),
 
-  getReliefSupplyReqeuestAccepted: async (req: any, res: any) => {
-    try {
-      const response = await reliefService.getReliefSupplyReqeuestAcceptedService(req.params.id);
-      res.status(response.status).json(response.payload);
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
-    }
-  },
+  getReliefSupplyReqeuestAccepted: asyncHandler(async (req: any, res: any) => {
+    const response = await reliefService.getReliefSupplyReqeuestAcceptedService(req.params.id);
+    res.status(200).json(response);
+  }),
 };

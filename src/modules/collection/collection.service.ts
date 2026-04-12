@@ -1,71 +1,57 @@
-import CollectionCenter from "./collection.model";
-import ReliefSupply from "../relief/reliefSupply.model";
+import * as collectionRepository from "./collection.repository";
+import { AppError } from "../../common/errors/AppError";
 
 export const addReliefCenterService = async (data: any) => {
   const { CenterName, InCharge, Phone, Address } = data;
-  try {
-    const result = await CollectionCenter.create({
-      CenterName,
-      InCharge,
-      Phone,
-      Address
-    });
-    return { status: 201, payload: { message: "Collection added with success" } };
-  } catch (error: any) {
-    console.log(error.message);
-    throw new Error(error.message);
-  }
+  const result = await collectionRepository.createCollectionCenter({
+    CenterName,
+    InCharge,
+    Phone,
+    Address
+  });
+  return { message: "Collection added with success" };
 };
 
 export const getAllReliefCenterService = async () => {
-  try {
-    const user = await CollectionCenter.find();
-    return { status: 200, payload: user };
-  } catch (error: any) {
-    throw new Error(error.message);
-  }
+  const user = await collectionRepository.findCollectionCenters();
+  return user;
 };
 
 export const AcceptDeliveryService = async (id: string, data: any) => {
   const { AcceptedBy } = data;
   console.log('accept' + AcceptedBy);
-  try {
-    const result = await ReliefSupply.findByIdAndUpdate(id, {
-      $set: {
-        Status: 'accepted',
-        AcceptedBy
-      }
-    });
-    return { status: 200, payload: result };
-  } catch (err: any) {
-    console.error(err.message);
-    throw new Error(err.message);
+  const result = await collectionRepository.updateReliefSupplyById(id, {
+    $set: {
+      Status: 'accepted',
+      AcceptedBy
+    }
+  });
+  if (!result) {
+    throw new AppError({ message: 'Relief Supply Request not found', statusCode: 404 });
   }
+  return result;
 };
 
 export const DispatchItemService = async (id: string, data: any) => {
   const { DeliveryContact } = data;
-  try {
-    const result = await ReliefSupply.findByIdAndUpdate(id, {
-      $set: {
-        Status: 'dispatched',
-        DeliveryContact
-      }
-    });
-    return { status: 200, payload: result };
-  } catch (err: any) {
-    console.error(err.message);
-    throw new Error(err.message);
+  const result = await collectionRepository.updateReliefSupplyById(id, {
+    $set: {
+      Status: 'dispatched',
+      DeliveryContact
+    }
+  });
+  if (!result) {
+    throw new AppError({ message: 'Relief Supply Request not found', statusCode: 404 });
   }
+  return result;
 };
 
 export const getCollectionCenterService = async (id: string) => {
   console.log(id, "id vanno");
-  try {
-    const userdata = await CollectionCenter.find({ InCharge: id });
-    console.log(userdata);
-    return { status: 200, payload: userdata };
-  } catch (error: any) {
-    return { status: 401, payload: { message: 'Get Req Failed' } };
+  const userdata = await collectionRepository.findCollectionCenters({ InCharge: id });
+  if (!userdata) {
+    throw new AppError({ message: 'Get Req Failed', statusCode: 401 });
   }
+  console.log(userdata);
+  return userdata;
 };

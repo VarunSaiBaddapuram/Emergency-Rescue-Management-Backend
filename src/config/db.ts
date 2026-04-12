@@ -1,15 +1,16 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import { logger } from "../common/logger/logger";
 
 dotenv.config();
 
 //XiQS05OQfUgy4wIM
-mongoose.set('strictQuery', false)
-console.log("URI from dotenv: ", process.env.MONGO_URI ? "Found" : "Missing");
+mongoose.set('strictQuery', false);
+
 mongoose
   .connect(process.env.MONGO_URI as string)
-  .then(() => console.log("mongoose connected"))
-  .catch((err) => console.log("MongoDB connection error:", err));
+  .then(() => logger.info("Mongoose connected successfully"))
+  .catch((err) => logger.error({ err }, "MongoDB connection error"));
 
 const db = mongoose.connection;
 

@@ -1,6 +1,6 @@
-import User from '../relief/reliefCenter.model';
+import * as userRepository from './user.repository';
 
 export const getUserDataService = async () => {
-  const userData = await User.find();
-  return { status: 200, payload: userData };
+  const userData = await userRepository.findAllReliefCenters();
+  return userData;
 };
