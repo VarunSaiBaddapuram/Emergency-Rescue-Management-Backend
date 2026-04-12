@@ -1,0 +1,45 @@
+import express from "express";
+import cors from "cors";
+
+import cookieParser from "cookie-parser";
+import dns from "node:dns";
+import path from "path";
+
+// DB connection
+import "./config/db";
+
+// Route modules
+import userRoute from "./modules/user/user.routes";
+import userRoutes from "./modules/auth/auth.routes";
+import reliefRoutes from "./modules/relief/relief.routes";
+import collectionRoutes from "./modules/collection/collection.routes";
+import notification from "./modules/notification/notification.routes";
+import emailRoutes from "./modules/email/email.routes";
+
+dns.setServers(['8.8.8.8', '8.8.4.4']);
+
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+  })
+);
+
+app.use("/api", userRoute);
+app.use("/api", emailRoutes);
+app.use("/relief", reliefRoutes);
+app.use("/collection", collectionRoutes);
+app.use("/user", userRoutes);
+app.use("/notification", notification);
+
+const _dirname = path.dirname("");
+const buildpath = path.join(_dirname, "../client/build");
+app.use(express.static(buildpath));
+
+export default app;

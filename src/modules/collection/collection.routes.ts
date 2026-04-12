@@ -1,5 +1,5 @@
 import express from "express";
-import CollectionCenterController from "../controllers/CollectionCenterController";
+import CollectionCenterController from "./collection.controller";
 const router = express.Router();
 
 

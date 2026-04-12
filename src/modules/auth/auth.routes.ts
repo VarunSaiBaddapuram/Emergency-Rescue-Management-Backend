@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import UserController from "../controllers/users";
+import UserController from "./auth.controller";
 
 router.post("/signup", UserController.signup); // Update this route for signup
 

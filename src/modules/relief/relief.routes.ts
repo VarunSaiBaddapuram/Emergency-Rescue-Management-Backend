@@ -1,5 +1,5 @@
 import express from "express";
-import reliefCenterController from "../controllers/reliefCenterController";
+import reliefCenterController from "./relief.controller";
 const { getReliefCenter,addReliefCenter,getReliefSupplyReqeuestAccepted, addadmission ,getAllReliefCenter, addReliefSupplyRequest, confirmDelivery, getAllReliefSupplyReqeuest, getReliefSupplyReqeuestbyCreator } = reliefCenterController;
 
 const router = express.Router();
