@@ -1,8 +1,9 @@
 import express from "express";
 const router = express.Router();
 import UserController from "./auth.controller";
+import { validateAgencyKey } from "../../common/middleware/auth.middleware";
 
-router.post("/signup", UserController.signup); // Update this route for signup
+router.post("/signup", validateAgencyKey, UserController.signup); // Update this route for signup
 
 router.post("/signin", UserController.signin);
 router.post('/auth', UserController.verifyToken);

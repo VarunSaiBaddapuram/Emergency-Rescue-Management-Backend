@@ -9,12 +9,16 @@ export default {
 
   signin: asyncHandler(async (req: any, res: any) => {
     const response = await authService.signinService(req.body);
-    return res.status(201).json(response);
+    return res.status(200).json(response);
   }),
 
   verifyToken: asyncHandler(async (req: any, res: any) => {
-    const response = await authService.verifyTokenService(req.body.token);
-    return res.status(200).json(response);
+    const token = req.body.token || (req.headers.authorization && req.headers.authorization.split(" ")[1]);
+    const decoded = await authService.verifyTokenService(token);
+    return res.status(200).json({
+      message: "Token is valid",
+      data: decoded
+    });
   }),
 
   getUser: asyncHandler(async (req: any, res: any) => {

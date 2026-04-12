@@ -30,7 +30,7 @@ const UserSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ['reliefCenter', 'collectionCenter'], // If there are specific roles
+      enum: ['reliefCenter', 'collectionCenter', 'admin'], // If there are specific roles
       default: 'collectionCenter', // Default value if not specified
     },
   },
