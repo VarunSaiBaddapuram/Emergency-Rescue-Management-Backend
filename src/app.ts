@@ -19,6 +19,7 @@ import reliefRoutes from "./modules/relief/relief.routes";
 import collectionRoutes from "./modules/collection/collection.routes";
 import notification from "./modules/notification/notification.routes";
 import emailRoutes from "./modules/email/email.routes";
+import sosRoutes from "./modules/sos/sos.routes";
 
 dns.setServers(['8.8.8.8', '8.8.4.4']);
 
@@ -42,6 +43,7 @@ app.use("/relief", reliefRoutes);
 app.use("/collection", collectionRoutes);
 app.use("/user", userRoutes);
 app.use("/notification", notification);
+app.use("/sos", sosRoutes);
 
 const _dirname = path.dirname("");
 const buildpath = path.join(_dirname, "../client/build");
