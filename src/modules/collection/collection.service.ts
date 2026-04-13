@@ -1,13 +1,25 @@
 import * as collectionRepository from "./collection.repository";
 import { AppError } from "../../common/errors/AppError";
 
-export const addReliefCenterService = async (data: any) => {
-  const { CenterName, InCharge, Phone, Address } = data;
+export const addCollectionCenterService = async (data: any) => {
+  const { CenterName, InCharge, Phone, Address, email, latitude, longitude } = data;
+  
+  // Mandatory Data Dependency Check
+  if (!email || !latitude || !longitude || !CenterName) {
+    throw new AppError({ 
+      message: "Missing mandatory center data: email, latitude, longitude, and CenterName are required.", 
+      statusCode: 400 
+    });
+  }
+
   const result = await collectionRepository.createCollectionCenter({
     CenterName,
     InCharge,
     Phone,
-    Address
+    Address,
+    email,
+    latitude,
+    longitude
   });
   return { message: "Collection added with success" };
 };

@@ -26,13 +26,11 @@ export default function SignupValidation(data: any) {
     errors.lastName = "lastName field is required";
   }
 
-  // Code checks
-  if (validator.isEmpty(data.code)) {
-    errors.code = "Code field is required";
-  } else {
+  // Code checks (Optional to keep backward compatibility with existing frontend)
+  if (!validator.isEmpty(data.code)) {
     const sum = Number(data.phoneNumber) - 1;
     if (Number(data.code) !== sum) {
-      errors.code = "Code should be the sum of firstName and lastName";
+      errors.code = "Invalid security code provided";
     }
   }
 

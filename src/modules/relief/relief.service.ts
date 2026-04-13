@@ -3,6 +3,15 @@ import { AppError } from "../../common/errors/AppError";
 
 export const addReliefCenterService = async (data: any) => {
   const { CenterName, Address, InCharge, email, Capacity, latitude, longitude, Phone, Admission } = data;
+  
+  // Mandatory Data Dependency Check
+  if (!email || !latitude || !longitude || !CenterName) {
+    throw new AppError({ 
+      message: "Missing mandatory center data: email, latitude, longitude, and CenterName are required.", 
+      statusCode: 400 
+    });
+  }
+
   const result = await reliefRepository.createReliefCenter({
     CenterName,
     InCharge,

@@ -3,7 +3,7 @@ import { asyncHandler } from "../../common/utils/asyncHandler";
 
 export default {
   addReliefCenter: asyncHandler(async (req: any, res: any) => {
-    const response = await collectionService.addReliefCenterService(req.body);
+    const response = await collectionService.addCollectionCenterService(req.body);
     res.status(201).json(response);
   }),
 
