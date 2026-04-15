@@ -13,7 +13,7 @@ router.post("/addreliefsupplyrequest", verifyToken, authorizeRoles('reliefCenter
 router.put("/confirmdelivery/:id", verifyToken, authorizeRoles('reliefCenter', 'admin'), confirmDelivery)
 router.get("/getreliefsupply",getAllReliefSupplyReqeuest)
 router.get("/getSupplyReqbyCreator/:id", verifyToken, authorizeRoles('reliefCenter', 'admin'), getReliefSupplyReqeuestbyCreator)
-router.get("/getSupplyReqbyAccepted/:id", verifyToken, authorizeRoles('reliefCenter', 'admin'), getReliefSupplyReqeuestAccepted)
+router.get("/getSupplyReqbyAccepted/:id", verifyToken, authorizeRoles('reliefCenter', 'collectionCenter', 'admin'), getReliefSupplyReqeuestAccepted)
 
 
 export default router;

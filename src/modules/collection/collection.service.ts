@@ -30,12 +30,13 @@ export const getAllReliefCenterService = async () => {
 };
 
 export const AcceptDeliveryService = async (id: string, data: any) => {
-  const { AcceptedBy } = data;
+  const { AcceptedBy, AcceptedByName } = data;
   console.log('accept' + AcceptedBy);
   const result = await collectionRepository.updateReliefSupplyById(id, {
     $set: {
       Status: 'accepted',
-      AcceptedBy
+      AcceptedBy,
+      AcceptedByName
     }
   });
   if (!result) {
@@ -45,11 +46,13 @@ export const AcceptDeliveryService = async (id: string, data: any) => {
 };
 
 export const DispatchItemService = async (id: string, data: any) => {
-  const { DeliveryContact } = data;
+  const { DeliveryContact, phone } = data;
+  const contact = DeliveryContact || phone;
+  
   const result = await collectionRepository.updateReliefSupplyById(id, {
     $set: {
       Status: 'dispatched',
-      DeliveryContact
+      DeliveryContact: contact
     }
   });
   if (!result) {

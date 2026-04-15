@@ -93,6 +93,9 @@ export const getReliefSupplyReqeuestbyCreatorService = async (id: string) => {
 };
 
 export const getReliefSupplyReqeuestAcceptedService = async (id: string) => {
-  const user = await reliefRepository.findReliefSupplies({ Status: 'accepted', AcceptedBy: id });
+  const user = await reliefRepository.findReliefSupplies({ 
+    Status: { $in: ['accepted', 'dispatched', 'delivered'] }, 
+    AcceptedBy: id 
+  });
   return user;
 };

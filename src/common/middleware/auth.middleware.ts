@@ -4,7 +4,6 @@ import { AppError } from "../errors/AppError";
 import { asyncHandler } from "../utils/asyncHandler";
 
 const JWT_SECRET = process.env.JWT_SECRET || "default_secret";
-const AGENCY_KEY = process.env.AGENCY_KEY || "india1";
 
 interface DecodedToken {
   _id: string;
@@ -87,9 +86,11 @@ export const authorizeRoles = (...roles: string[]) => {
  */
 export const validateAgencyKey = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const agencyKey = req.headers["x-agency-key"];
+    const rawAgencyKey = req.headers["x-agency-key"];
+    const agencyKey = Array.isArray(rawAgencyKey) ? rawAgencyKey[0] : rawAgencyKey;
+    const expectedKey = (process.env.AGENCY_KEY || "india1").trim();
 
-    if (!agencyKey || agencyKey !== AGENCY_KEY) {
+    if (!agencyKey || agencyKey.trim() !== expectedKey) {
       throw new AppError({
         message: "Unauthorized: Invalid or missing Agency Key",
         statusCode: 401,

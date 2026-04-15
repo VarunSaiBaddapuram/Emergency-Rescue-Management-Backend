@@ -29,6 +29,11 @@ const ReliefSupplySchema = new Schema(
             required : false,
             default : null
         },
+        AcceptedByName : {
+            type: String,
+            required : false,
+            default : null
+        },
         DeliveryContact :{
             type: String,
             required : false,
