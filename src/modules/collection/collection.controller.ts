@@ -4,6 +4,7 @@ import { asyncHandler } from "../../common/utils/asyncHandler";
 export default {
   addReliefCenter: asyncHandler(async (req: any, res: any) => {
     const response = await collectionService.addCollectionCenterService(req.body);
+    req.app.get("io")?.emit("CENTER_DATA_UPDATED");
     res.status(201).json(response);
   }),
 
@@ -14,11 +15,13 @@ export default {
 
   AcceptDelivery: asyncHandler(async (req: any, res: any) => {
     const response = await collectionService.AcceptDeliveryService(req.params.id, req.body);
+    req.app.get("io")?.emit("CENTER_DATA_UPDATED");
     res.status(200).json(response);
   }),
 
   DispatchItem: asyncHandler(async (req: any, res: any) => {
     const response = await collectionService.DispatchItemService(req.params.id, req.body);
+    req.app.get("io")?.emit("CENTER_DATA_UPDATED");
     res.status(200).json(response);
   }),
 

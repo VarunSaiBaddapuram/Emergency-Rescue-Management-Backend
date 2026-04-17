@@ -56,15 +56,13 @@ export const getAllReliefCenterService = async () => {
 };
 
 export const addReliefSupplyRequestService = async (data: any) => {
-  const { CenterName, Phone, ItemName, Quantity, Status, AcceptedBy, Delivered, Requester } = data;
+  const { CenterName, Phone, ItemName, Quantity, Requester } = data;
   const result = await reliefRepository.createReliefSupply({
     CenterName,
     Phone,
     ItemName,
     Quantity,
-    Status,
-    AcceptedBy,
-    Delivered,
+    Status: "pending",
     Requester
   });
   return { message: "Relief Supply Request Sent" };
