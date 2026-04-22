@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { processSOSAlert } from "./sos.service";
 import jwt from "jsonwebtoken";
+import { logger } from "../../common/logger/logger";
 
 const JWT_SECRET = process.env.JWT_SECRET || "default_secret";
 
@@ -33,7 +34,7 @@ export const sendSOS = async (req: Request, res: Response): Promise<void> => {
         }
       } catch (err) {
         // Token invalid or expired, proceed with IP-based rate limiting
-        console.warn("Invalid token provided for SOS, falling back to IP-based rate limiting");
+        logger.warn("Invalid token provided for SOS, falling back to IP-based rate limiting");
       }
     }
 
@@ -55,7 +56,7 @@ export const sendSOS = async (req: Request, res: Response): Promise<void> => {
       fallbackUsed: result.fallbackUsed
     });
   } catch (error: any) {
-    console.error("SOS Controller Error:", error);
+    logger.error({ err: error }, "SOS Controller Error");
     
     const statusCode = error.message.includes("Rate limit exceeded") ? 429 : 500;
     

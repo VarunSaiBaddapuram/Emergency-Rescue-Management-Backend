@@ -1,5 +1,6 @@
 import validator from "validator";
 import isEmpty from "./IsEmpty";
+import { logger } from "../logger/logger";
 
 export default function SignupValidation(data: any) {
   let regex = /(?=(.*[0-9]))((?=.*[A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z]))^.{8,}$/i;
@@ -60,7 +61,9 @@ export default function SignupValidation(data: any) {
   } else if (data.password !== data.confirmPassword) {
     errors.confirmPassword = "Passwords do not match";
   }
-  console.log(errors);
+  if (!isEmpty(errors)) {
+    logger.warn({ errors }, "Signup validation failed");
+  }
   return {
     errors,
     isValid: isEmpty(errors),

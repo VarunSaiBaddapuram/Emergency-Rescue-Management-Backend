@@ -1,10 +1,16 @@
+import dotenv from "dotenv";
 import nodemailer from "nodemailer";
+import { logger } from "../../common/logger/logger";
+
+dotenv.config();
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: process.env.SMTP_HOST,
+  port: parseInt(process.env.SMTP_PORT || "587"),
+  secure: false,
   auth: {
-    user: "corescue6@gmail.com",
-    pass: "ubot woed gcrh oskm",
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
   },
 });
 
@@ -12,7 +18,7 @@ export const sendEmailsService = async (data: any) => {
   const { emailData, latitude, longitude } = data;
   const emailPromises = emailData.map(async (email: any) => {
     const mailOptions = {
-      from: "corescue6@gmail.com",
+      from: process.env.SMTP_USER,
       to: email.email,
       subject: "Alert",
       html: `Emergency at ${latitude} ${longitude}`,
@@ -21,6 +27,6 @@ export const sendEmailsService = async (data: any) => {
   });
 
   const emailResponses = await Promise.all(emailPromises);
-  console.log("Emails sent successfully:", emailResponses);
+  logger.info({ emailResponses }, "Emails sent successfully");
   return { success: true, message: "Emails sent successfully" };
 };

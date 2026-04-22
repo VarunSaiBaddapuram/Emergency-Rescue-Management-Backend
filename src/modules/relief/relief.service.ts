@@ -1,5 +1,6 @@
 import * as reliefRepository from "./relief.repository";
 import { AppError } from "../../common/errors/AppError";
+import { logger } from "../../common/logger/logger";
 
 export const addReliefCenterService = async (data: any) => {
   const { CenterName, Address, InCharge, email, Capacity, latitude, longitude, Phone, Admission } = data;
@@ -23,22 +24,22 @@ export const addReliefCenterService = async (data: any) => {
     longitude,
     Address
   });
-  console.log(result);
+  logger.info({ result }, "Relief Center added");
   return { message: "Relief Center added with success" };
 };
 
 export const getReliefCenterService = async (id: string) => {
-  console.log(id, "id vanno");
+  logger.info({ id }, "Getting relief center by InCharge ID");
   const userdata = await reliefRepository.findReliefCenters({ InCharge: id });
   if (!userdata) {
     throw new AppError({ message: 'Get Req Failed', statusCode: 401 });
   }
-  console.log(userdata);
+  logger.info({ userdata }, "Found relief center data");
   return userdata;
 };
 
 export const addadmissionService = async (id: string, Admission: any) => {
-  console.log(Admission);
+  logger.info({ id, Admission }, "Updating admission for relief center");
   const userdata = await reliefRepository.updateReliefCenterById(id, {
     $set: {
       Admission: Admission

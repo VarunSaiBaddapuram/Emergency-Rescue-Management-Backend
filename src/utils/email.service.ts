@@ -1,13 +1,16 @@
 import nodemailer from "nodemailer";
+import { logger } from "../common/logger/logger";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: process.env.SMTP_HOST,
+  port: parseInt(process.env.SMTP_PORT || "587"),
+  secure: false, // true for 465, false for other ports
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
   },
 });
 
@@ -29,7 +32,7 @@ export const sendSOSEmail = async (data: SOSMailData) => {
   const googleMapsLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
 
   const mailOptions = {
-    from: `"Alert System" <${process.env.EMAIL_USER}>`,
+    from: `"Alert System" <${process.env.SMTP_USER}>`,
     to: to,
     subject: "EMERGENCY SOS ALERT - ACTION REQUIRED",
     html: `
@@ -91,7 +94,7 @@ export const sendSOSEmail = async (data: SOSMailData) => {
     const info = await transporter.sendMail(mailOptions);
     return { success: true, messageId: info.messageId, recipient: to };
   } catch (error: any) {
-    console.error(`Failed to send SOS email to ${to}:`, error.message);
+    logger.error({ err: error, recipient: to }, "Failed to send SOS email");
     throw error;
   }
 };

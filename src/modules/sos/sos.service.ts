@@ -1,5 +1,6 @@
 import { findReliefCenters } from "../relief/relief.repository";
 import { sendSOSEmail } from "../../utils/email.service";
+import { logger } from "../../common/logger/logger";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -56,7 +57,7 @@ export const processSOSAlert = async (payload: SOSRequestPayload) => {
   // Update last request time
   lastSOSRequest.set(requesterKey, now);
 
-  console.log(`Processing SOS Alert for ${requesterKey} at (${latitude}, ${longitude})`);
+  logger.info(`Processing SOS Alert for ${requesterKey} at (${latitude}, ${longitude})`);
 
   // 2. Fetch all relief centers
   const allCenters = await findReliefCenters();
@@ -89,12 +90,12 @@ export const processSOSAlert = async (payload: SOSRequestPayload) => {
   let fallbackUsed = false;
   
   if (selectedCenters.length > 0) {
-    console.log(`Found ${selectedCenters.length} centers within ${MAX_DISTANCE_KM}km`);
+    logger.info(`Found ${selectedCenters.length} centers within ${MAX_DISTANCE_KM}km`);
     recipients = selectedCenters.map(c => c.email);
   } else {
     const fallbackEmail = process.env.EMAIL_FALLBACK;
     if (fallbackEmail) {
-      console.warn(`No centers within ${MAX_DISTANCE_KM}km. Using fallback: ${fallbackEmail}`);
+      logger.warn(`No centers within ${MAX_DISTANCE_KM}km. Using fallback: ${fallbackEmail}`);
       recipients = [fallbackEmail];
       fallbackUsed = true;
     } else {

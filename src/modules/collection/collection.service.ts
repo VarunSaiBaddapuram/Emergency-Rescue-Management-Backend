@@ -1,5 +1,6 @@
 import * as collectionRepository from "./collection.repository";
 import { AppError } from "../../common/errors/AppError";
+import { logger } from "../../common/logger/logger";
 
 export const addCollectionCenterService = async (data: any) => {
   const { CenterName, InCharge, Phone, Address, email, latitude, longitude } = data;
@@ -31,7 +32,7 @@ export const getAllReliefCenterService = async () => {
 
 export const AcceptDeliveryService = async (id: string, data: any) => {
   const { AcceptedBy, AcceptedByName } = data;
-  console.log('accept' + AcceptedBy);
+  logger.info({ id, AcceptedBy, AcceptedByName }, "Accepting delivery");
   const result = await collectionRepository.updateReliefSupplyById(id, {
     $set: {
       Status: 'accepted',
@@ -62,11 +63,11 @@ export const DispatchItemService = async (id: string, data: any) => {
 };
 
 export const getCollectionCenterService = async (id: string) => {
-  console.log(id, "id vanno");
+  logger.info({ id }, "Getting collection center by InCharge ID");
   const userdata = await collectionRepository.findCollectionCenters({ InCharge: id });
   if (!userdata) {
     throw new AppError({ message: 'Get Req Failed', statusCode: 401 });
   }
-  console.log(userdata);
+  logger.info({ userdata }, "Found collection center data");
   return userdata;
 };
