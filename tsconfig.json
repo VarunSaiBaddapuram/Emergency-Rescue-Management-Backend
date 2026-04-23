@@ -6,12 +6,11 @@
     "forceConsistentCasingInFileNames": true,
     "strict": false,
     "skipLibCheck": true,
-    "rootDir": ".",
-    "baseUrl": "./src",
+    "rootDir": "src",
+    "outDir": "dist",
+    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "*"
-      ]
+      "@/*": ["src/*"]
     }
   },
   "include": [
