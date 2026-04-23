@@ -32,7 +32,8 @@ app.use(pinoHttp({ logger }));
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL ? process.env.CLIENT_URL.split(",") : [],
+    origin: process.env.CLIENT_URL ? process.env.CLIENT_URL.split(",").map(o => o.trim()) : [],
+    credentials: true,
     methods: "GET,POST,PUT,DELETE,OPTIONS",
     allowedHeaders: ["Content-Type", "Authorization", "x-agency-key"],
   })
