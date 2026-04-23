@@ -44,7 +44,7 @@ process.on("exit", () => {
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000"],
+    origin: process.env.CLIENT_URL ? process.env.CLIENT_URL.split(",") : [],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "x-agency-key"],
   },
