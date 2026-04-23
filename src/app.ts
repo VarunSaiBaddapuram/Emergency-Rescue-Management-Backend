@@ -30,11 +30,25 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(pinoHttp({ logger }));
 
+const allowedOrigins = process.env.CLIENT_URL 
+  ? process.env.CLIENT_URL.split(",").map(o => o.trim()) 
+  : ["https://emergency-alert-frontend-five.vercel.app"];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL ? process.env.CLIENT_URL.split(",").map(o => o.trim()) : [],
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.indexOf(origin) !== -1 || !process.env.NODE_ENV || process.env.NODE_ENV !== "production") {
+        callback(null, true);
+      } else {
+        console.error(`CORS blocked for origin: ${origin}`);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
-    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "x-agency-key"],
   })
 );
